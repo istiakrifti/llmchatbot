@@ -1,5 +1,5 @@
 import streamlit as st
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from sentence_transformers import SentenceTransformer
 from langchain.chains import RetrievalQA
 from langchain_community.vectorstores import FAISS
@@ -26,14 +26,16 @@ def load_resources():
     # tokenizer = AutoTokenizer.from_pretrained(model_name)
     # model = AutoModelForCausalLM.from_pretrained(model_name)
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    quantization_config = BitsAndBytesConfig(
+        load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16
+    )
+
+    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        torch_dtype=torch.float16,
+        quantization_config=quantization_config
     )
-
-    model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=8)
 
     # Load your dataset (this is just an example, replace with your actual dataset)
     dataset = load_dataset('qiaojin/PubMedQA', 'pqa_artificial')  # Replace with the Hugging Face dataset name
