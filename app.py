@@ -14,10 +14,10 @@ from dotenv import load_dotenv
 # Function to load model, tokenizer, and dataset only once
 @st.cache_resource  # This decorator caches the loading process
 def load_resources():
-    load_dotenv()
+    # load_dotenv()
 
     # Set the environment variable using os
-    huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
+    huggingface_token = st.secrets["huggingface"]["token"]
 
     # Run the huggingface-cli login command from the Python script using subprocess
     subprocess.run(["huggingface-cli", "login", "--token", huggingface_token])
