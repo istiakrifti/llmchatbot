@@ -3,6 +3,7 @@ langchain
 langchain-community
 python-dotenv
 bitsandbytes
+accelerate
 transformers 
 torch 
 faiss-cpu 
