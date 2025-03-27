@@ -23,8 +23,18 @@ def load_resources():
     subprocess.run(["huggingface-cli", "login", "--token", huggingface_token])
     # Load the pre-trained Llama3 model (or your fine-tuned model)
     model_name = "meta-llama/Meta-Llama-3-8B-Instruct"  # Replace with your fine-tuned model path or model name from Hugging Face
+    # tokenizer = AutoTokenizer.from_pretrained(model_name)
+    # model = AutoModelForCausalLM.from_pretrained(model_name)
+
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
+
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.float16,
+        device_map="auto",
+    )
+
+    model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=8)
 
     # Load your dataset (this is just an example, replace with your actual dataset)
     dataset = load_dataset('qiaojin/PubMedQA', 'pqa_artificial')  # Replace with the Hugging Face dataset name
