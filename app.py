@@ -31,7 +31,6 @@ def load_resources():
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype=torch.float16,
-        device_map="auto",
     )
 
     model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=8)
