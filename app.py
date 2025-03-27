@@ -9,7 +9,7 @@ import torch
 import pandas as pd
 import os
 import subprocess
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 # Function to load model, tokenizer, and dataset only once
 @st.cache_resource  # This decorator caches the loading process
@@ -22,20 +22,23 @@ def load_resources():
     # Run the huggingface-cli login command from the Python script using subprocess
     subprocess.run(["huggingface-cli", "login", "--token", huggingface_token])
     # Load the pre-trained Llama3 model (or your fine-tuned model)
-    model_name = "meta-llama/Meta-Llama-3-8B-Instruct"  # Replace with your fine-tuned model path or model name from Hugging Face
+    # model_name = "meta-llama/Meta-Llama-3-8B-Instruct"  # Replace with your fine-tuned model path or model name from Hugging Face
     # tokenizer = AutoTokenizer.from_pretrained(model_name)
     # model = AutoModelForCausalLM.from_pretrained(model_name)
 
-    quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16
-    )
+    # quantization_config = BitsAndBytesConfig(
+    #     load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16
+    # )
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
+    # tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        quantization_config=quantization_config
-    )
+    # model = AutoModelForCausalLM.from_pretrained(
+    #     model_name,
+    #     quantization_config=quantization_config
+    # )
+
+    tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
+    model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-1B")
 
     # Load your dataset (this is just an example, replace with your actual dataset)
     dataset = load_dataset('qiaojin/PubMedQA', 'pqa_artificial')  # Replace with the Hugging Face dataset name
