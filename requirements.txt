@@ -2,6 +2,7 @@ streamlit
 langchain 
 langchain-community
 python-dotenv
+bitsandbytes
 transformers 
 torch 
 faiss-cpu 
